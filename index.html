@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hands-On Data Engineering — Ayushi Banerjee</title>
+  <meta name="description" content="Practical writing on data engineering, pipelines, system design, and the craft of building data infrastructure.">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ---- PAGE-SPECIFIC ---- */
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex: 1; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      padding: 80px 40px 70px;
+      border-bottom: 0.5px solid var(--border);
+      overflow: hidden;
+    }
+
+    .hero-sigil {
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 480px;
+      height: 480px;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.07;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.20em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 400;
+      line-height: 1.00;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-title em {
+      font-style: italic;
+    }
+
+    .hero-sub {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 440px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 0.5px solid rgba(180,176,215,0.2);
+      padding: 9px 18px;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .hero-cta:hover { border-color: rgba(180,176,215,0.45); color: var(--text-primary); }
+
+    /* FEATURED */
+    .featured-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .featured-visual {
+      border-right: 0.5px solid var(--border);
+      background: var(--bg-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 280px;
+      padding: 40px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .featured-visual img {
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      opacity: 0.45;
+      transition: opacity 0.4s, transform 0.4s;
+    }
+
+    .featured-visual:hover img { opacity: 0.65; transform: scale(1.04); }
+
+    .featured-content {
+      padding: 48px 44px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .featured-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .featured-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+
+    .featured-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+    }
+
+    .featured-excerpt {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    .read-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: gap 0.2s;
+    }
+
+    .read-link:hover { gap: 10px; }
+    .read-link .arrow { transition: transform 0.2s; }
+    .read-link:hover .arrow { transform: translateX(3px); }
+
+    /* GRID HEADER */
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 40px 16px;
+    }
+
+    .view-all {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      transition: color 0.2s;
+    }
+
+    .view-all:hover { color: var(--text-muted); }
+
+    /* BLOG GRID */
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 0.5px solid var(--border);
+    }
+
+    .blog-card {
+      padding: 28px 32px;
+      border-right: 0.5px solid var(--border-light);
+      border-bottom: 0.5px solid var(--border-light);
+      transition: background 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .blog-card:nth-child(3n) { border-right: none; }
+    .blog-card:hover { background: var(--bg-2); }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .card-date {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--text-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      flex: 1;
+    }
+
+    .card-excerpt {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .card-read {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: auto;
+      transition: gap 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-read:hover { gap: 8px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img class="nav-logo-icon" src="assets/images/chrome-dark.png" alt="">
+      Ayushi Banerjee
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="blog.html">Blog</a>
+      <a href="feed.xml">RSS</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <img class="hero-sigil" src="assets/images/cybersigilism.png" alt="">
+      <div class="hero-eyebrow fade-up">Data Engineering · est. 2025</div>
+      <h1 class="hero-title fade-up fade-up-1">
+        Hands-On<br>
+        <em class="iri">Data</em><br>
+        Engineering.
+      </h1>
+      <p class="hero-sub fade-up fade-up-2">
+        Practical writing on pipelines, system design, and the craft of building data infrastructure that lasts.
+      </p>
+      <a href="blog.html" class="hero-cta fade-up fade-up-3">
+        Read the blog <span class="arrow">→</span>
+      </a>
+    </section>
+
+    <div class="iri-bar"></div>
+
+    <!-- FEATURED POST -->
+    <section>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 40px 14px;">
+        <span class="section-label">Featured post</span>
+        <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-faint);">01</span>
+      </div>
+      <div class="featured-section">
+        <a href="posts/medallion-architecture.html" class="featured-visual">
+          <img src="assets/images/chrome-stars.png" alt="Chrome decorative element">
+        </a>
+        <div class="featured-content">
+          <div class="featured-meta">
+            <span class="tag">Data Engineering</span>
+            <span class="featured-num">— 01</span>
+          </div>
+          <h2 class="featured-title">Why Your Medallion Architecture Is Secretly a Monolith</h2>
+          <p class="featured-excerpt">
+            A closer look at how layered data architectures collapse under real-world coupling — and what to do about it.
+          </p>
+          <a href="posts/medallion-architecture.html" class="read-link">
+            <span class="iri">Read post</span> <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG GRID -->
+    <div class="grid-header">
+      <span class="section-label">All posts</span>
+      <a href="blog.html" class="view-all">View all →</a>
+    </div>
+
+    <div class="blog-grid">
+      <a href="posts/medallion-architecture.html" class="blog-card">
+        <div class="card-top">
+          <span class="tag">Pipelines</span>
+          <span class="card-date">May 2025</span>
+        </div>
+        <div class="card-title">Why Your Medallion Architecture Is Secretly a Monolith</div>
+        <div class="card-excerpt">How layered data architectures collapse under real-world coupling, and patterns for keeping them honest.</div>
+        <span class="card-read"><span class="iri">Read more</span> →</span>
+      </a>
+
+      <!-- Add more cards here as you publish -->
+      <div class="blog-card" style="opacity:0.3;pointer-events:none;">
+        <div class="card-top">
+          <span class="tag">SQL</span>
+          <span class="card-date">Coming soon</span>
+        </div>
+        <div class="card-title">dbt Models at Scale: What No One Tells You</div>
+        <div class="card-excerpt">Practical limits of dbt when your model graph grows unwieldy.</div>
+      </div>
+
+      <div class="blog-card" style="opacity:0.3;pointer-events:none;">
+        <div class="card-top">
+          <span class="tag">Systems</span>
+          <span class="card-date">Coming soon</span>
+        </div>
+        <div class="card-title">The Hidden Cost of Schema Evolution</div>
+        <div class="card-excerpt">Schema changes break things quietly. Here's how to make them loud and manageable.</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-chrome-bar">
+      <img src="assets/images/chrome-stars.png" alt="">
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Ayushi Banerjee</span>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="feed.xml">RSS</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

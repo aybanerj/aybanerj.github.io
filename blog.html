@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Ayushi Banerjee</title>
+  <meta name="description" content="All posts on data engineering, pipelines, and system design.">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex: 1; }
+
+    .blog-header {
+      padding: 64px 40px 48px;
+      border-bottom: 0.5px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .blog-header-sigil {
+      position: absolute;
+      right: -40px;
+      top: -40px;
+      width: 320px;
+      opacity: 0.06;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .blog-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 5vw, 64px);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .blog-header p {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      max-width: 400px;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FILTER TAGS */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 18px 40px;
+      border-bottom: 0.5px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .filter-btn {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 0.5px solid rgba(180,176,215,0.15);
+      padding: 4px 11px;
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      color: var(--text-primary);
+      border-color: rgba(180,176,215,0.4);
+      background: rgba(180,176,215,0.06);
+    }
+
+    /* POST LIST */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 32px;
+      align-items: start;
+      padding: 28px 40px;
+      border-bottom: 0.5px solid var(--border-light);
+      transition: background 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .post-row:hover { background: var(--bg-2); }
+
+    .post-row-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+      padding-top: 3px;
+    }
+
+    .post-row-body {}
+
+    .post-row-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+
+    .post-row:hover .post-row-title { color: #fff; }
+
+    .post-row-excerpt {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .post-row-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .post-row-right {
+      text-align: right;
+      padding-top: 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .post-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+
+    .post-readtime {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-faint);
+    }
+
+    /* EMPTY STATE */
+    .coming-soon {
+      padding: 28px 40px;
+      border-bottom: 0.5px solid var(--border-light);
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 32px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .coming-soon-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    .coming-soon-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img class="nav-logo-icon" src="assets/images/chrome-dark.png" alt="">
+      Ayushi Banerjee
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="feed.xml">RSS</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="blog-header">
+      <img class="blog-header-sigil" src="assets/images/cybersigilism.png" alt="">
+      <h1 class="fade-up">All <em class="iri">posts.</em></h1>
+      <p class="fade-up fade-up-1">Practical writing on data engineering, pipelines, and building things that scale.</p>
+    </div>
+
+    <div class="filter-bar">
+      <span class="filter-label">Filter</span>
+      <button class="filter-btn active" onclick="filterPosts('all')">All</button>
+      <button class="filter-btn" onclick="filterPosts('pipelines')">Pipelines</button>
+      <button class="filter-btn" onclick="filterPosts('sql')">SQL</button>
+      <button class="filter-btn" onclick="filterPosts('systems')">Systems</button>
+      <button class="filter-btn" onclick="filterPosts('tooling')">Tooling</button>
+    </div>
+
+    <div class="post-list" id="post-list">
+
+      <!-- POST 1 - Published -->
+      <a href="posts/medallion-architecture.html" class="post-row" data-category="pipelines">
+        <div class="post-row-num">— 01</div>
+        <div class="post-row-body">
+          <div class="post-row-title">Why Your Medallion Architecture Is Secretly a Monolith</div>
+          <div class="post-row-excerpt">How layered data architectures collapse under real-world coupling, and patterns for keeping them honest and maintainable.</div>
+          <div class="post-row-meta">
+            <span class="tag">Pipelines</span>
+          </div>
+        </div>
+        <div class="post-row-right">
+          <span class="post-date">May 2025</span>
+          <span class="post-readtime">8 min</span>
+        </div>
+      </a>
+
+      <!-- PLACEHOLDERS — delete and replace as you write more posts -->
+      <div class="coming-soon" data-category="sql">
+        <div class="coming-soon-num">— 02</div>
+        <div>
+          <div class="coming-soon-title">dbt Models at Scale: What No One Tells You</div>
+          <div style="margin-top:6px;"><span class="tag">SQL</span></div>
+        </div>
+      </div>
+
+      <div class="coming-soon" data-category="systems">
+        <div class="coming-soon-num">— 03</div>
+        <div>
+          <div class="coming-soon-title">The Hidden Cost of Schema Evolution</div>
+          <div style="margin-top:6px;"><span class="tag">Systems</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-chrome-bar">
+      <img src="assets/images/chrome-stars.png" alt="">
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 Ayushi Banerjee</span>
+      <div class="footer-links">
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+        <a href="feed.xml">RSS</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function filterPosts(category) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      document.querySelectorAll('#post-list [data-category]').forEach(row => {
+        if (category === 'all' || row.dataset.category === category) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
