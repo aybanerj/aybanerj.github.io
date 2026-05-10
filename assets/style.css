@@ -14,8 +14,8 @@
   --border-light: rgba(190, 185, 220, 0.06);
   --text-primary:   #e2def8;
   --text-secondary: rgba(200, 196, 226, 0.55);
-  --text-muted:     rgba(180, 176, 215, 0.35);
-  --text-faint:     rgba(180, 176, 215, 0.20);
+  --text-muted:     rgba(180, 176, 215, 0.75);
+  --text-faint:     rgba(195, 192, 222, 0.35);
   --iri-start: #a8a4e0;
   --iri-mid1:  #c4b8f0;
   --iri-mid2:  #9dd8e8;
@@ -98,10 +98,6 @@ img { display: block; max-width: 100%; }
   object-position: 75% 10%;
   opacity: 0.8;
   border-radius: 2px;
-  /* crop to show a single star from the sheet */
-  clip-path: inset(10% 60% 60% 10%);
-  transform: scale(3.5) translate(7px, 7px);
-  transform-origin: top left;
 }
 
 .nav-links {
@@ -111,7 +107,7 @@ img { display: block; max-width: 100%; }
 }
 
 .nav-links a {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -149,7 +145,7 @@ footer {
 .footer-chrome-bar img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center 35%;
   opacity: 0.22;
 }
@@ -189,7 +185,7 @@ footer {
 }
 
 .footer-links a {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.08em;
   color: var(--text-faint);
   text-transform: uppercase;
@@ -201,7 +197,7 @@ footer {
 /* --- Tag Pill --- */
 .tag {
   display: inline-block;
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -218,7 +214,7 @@ footer {
 
 /* --- Section Label --- */
 .section-label {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;

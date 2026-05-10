@@ -16,7 +16,7 @@ site/
 │   ├── style.css               ← Global styles (edit here for theme changes)
 │   └── images/
 │       ├── footer.png    ← Footer bar image
-│       ├── chrome-dark.png     ← Nav logo / sidebar
+│       ├── star.png     ← Nav logo / sidebar
 │       ├── chrome-fluid.png    ← (available for use)
 │       └── cybersigilism.png   ← Hero & sidebar sigil
 └── posts/
@@ -110,7 +110,7 @@ All theme variables are in `assets/style.css` at the top:
 ### Swapping images
 Replace any file in `assets/images/` with your own PNG and keep the same filename. Images used:
 - **footer.png** → footer bar (tiled horizontally)
-- **chrome-dark.png** → nav logo icon + about sidebar
+- **star.png** → nav logo icon + about sidebar
 - **cybersigilism.png** → hero background + post sidebar decor
 
 ### Adding your photo (About page)
