@@ -142,11 +142,10 @@ footer {
 }
 
 .footer-chrome-bar img {
-  width: 100%;
+  width: 80%;
   height: 100%;
   object-fit: fill;
   object-position: center 35%;
-  opacity: 0.22;
 }
 
 .footer-chrome-bar::before,
