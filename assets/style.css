@@ -92,11 +92,10 @@ img { display: block; max-width: 100%; }
 }
 
 .nav-logo-icon {
-  width: 32px;
-  height: 32px;
+  width: 42px;
+  height: 42px;
   object-fit: fill;
-  object-position: 1px 2px;
-  opacity: 0.8;
+  object-position: 0px 2px;
   border-radius: 2px;
 }
 
