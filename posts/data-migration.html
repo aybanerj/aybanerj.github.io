@@ -313,7 +313,6 @@
       <a href="../index.html">Home</a>
       <a href="../about.html">About</a>
       <a href="../blog.html" class="active">Blog</a>
-      <a href="../feed.xml">RSS</a>
     </div>
   </nav>
 
@@ -324,12 +323,12 @@
       <aside class="post-sidebar">
         <div class="sb-block">
           <div class="sb-label">Date</div>
-          <div class="sb-val">May 2025</div>
+          <div class="sb-val">May 2026</div>
         </div>
 
         <div class="sb-block">
           <div class="sb-label">Category</div>
-          <a href="../blog.html" class="tag">Pipelines</a>
+          <a href="../blog.html" class="tag">Data Migration</a>
         </div>
 
         <div class="sb-block">
@@ -348,14 +347,14 @@
         <div class="sb-block">
           <div class="sb-label">On this page</div>
           <div class="toc-list">
-            <a href="#the-problem" class="toc-link">The problem</a>
-            <a href="#how-it-happens" class="toc-link">How it happens</a>
-            <a href="#the-fix" class="toc-link">What to do about it</a>
-            <a href="#conclusion" class="toc-link">Conclusion</a>
+            <a href="#requirements" class="toc-link">Changing Requirements</a>
+            <a href="#interconnection" class="toc-link">Interconnected Data</a>
+            <a href="#validation" class="toc-link">Data Validation</a>
+            <a href="#backfill" class="toc-link">Historical Backfills</a>
           </div>
         </div>
 
-        <img class="sb-sigil" src="../assets/images/cybersigilism.png" alt="">
+        <img class="sb-sigil" src="../assets/images/swirl.png" alt="">
       </aside>
 
       <!-- POST -->
@@ -364,123 +363,89 @@
         <div class="breadcrumb">
           <a href="../blog.html">Blog</a>
           <span>→</span>
-          <span>Pipelines</span>
+          <span>Warehouses</span>
           <span>→</span>
-          <span>Medallion Architecture</span>
+          <span>Data Migration</span>
         </div>
 
         <header class="post-header">
           <div class="post-num">— 01</div>
           <h1 class="post-title">
-            Why Your Medallion Architecture Is <em class="iri">Secretly a Monolith</em>
+            Why Data Migrations Go <em class="iri">Beyond</em> Lift and Shift
           </h1>
           <div class="post-meta">
-            <span class="meta-item">May 2025</span>
+            <span class="meta-item">May 2026</span>
             <span class="meta-dot">·</span>
             <span class="meta-item">8 min read</span>
             <span class="meta-dot">·</span>
-            <span class="tag">Pipelines</span>
+            <span class="tag">Warehouses</span>
           </div>
         </header>
 
         <div class="post-body" id="post-body">
 
           <p>
-            The medallion architecture — Bronze, Silver, Gold — has become the default mental model for modern data lakehouses. It's clean, intuitive, and makes for great slide decks. But in practice, I've watched it become something engineers dread touching: a tightly coupled, slow-moving monolith wearing the costume of a layered system.
+            Data migrations are among the most common responsibilities for data engineers, which sounded deceptively simple to me until I worked on my first migration between cloud data warehouses.
           </p>
 
-          <p>
-            This isn't a knock on the pattern itself. The idea is sound. The problem is in how teams implement it, and specifically, in the assumptions baked into the data flow between layers.
-          </p>
-
-          <div class="callout">
-            <p>A layered architecture is only as modular as the contracts between its layers. Without explicit contracts, layers become implicit dependencies — and implicit dependencies are just coupling with better PR.</p>
-          </div>
-
-          <h2 id="the-problem">The problem</h2>
+          <h2 id="requirements">Changing Requirements</h2>
 
           <p>
-            Here's the typical setup: raw data lands in Bronze. A set of dbt models or Spark jobs transforms it into Silver — cleaned, deduplicated, typed. More transformations produce Gold — the business-ready aggregates that power dashboards and ML features.
-          </p>
-
-          <p>
-            This feels modular. Each layer has a job. But look closer at what actually ties them together: <strong>the schema of the upstream table</strong>. Silver models reference Bronze column names directly. Gold models reference Silver column names directly. Add a column in Bronze and you might need to propagate that change through ten models. Rename something in Silver and Gold breaks.
-          </p>
-
-          <p>
-            That's not a layered architecture. That's a pipeline graph where every node is coupled to the schema of every node above it.
-          </p>
-
-          <h2 id="how-it-happens">How it happens</h2>
-
-          <p>
-            The coupling accumulates gradually, which is why it's easy to miss. No one decides "let's build a monolith." It happens like this:
-          </p>
-
-          <ul>
-            <li>A Silver model selects <code>*</code> from a Bronze table because it's convenient.</li>
-            <li>A Gold model uses five specific columns from Silver — columns that were never formally documented as a stable interface.</li>
-            <li>Six months later, a source system changes a column name. Bronze is updated. Silver's <code>SELECT *</code> silently passes through the new column name. Gold suddenly has a missing column and fails at 3am.</li>
-          </ul>
-
-          <p>
-            The root issue is that <strong>schemas are not contracts</strong>. Treating them as such is the original sin of most data pipelines.
-          </p>
-
-          <pre><code class="language-sql">-- The problem: implicit coupling via SELECT *
--- Silver model
-SELECT *
-FROM bronze.raw_events
-WHERE event_type IS NOT NULL
-
--- If bronze.raw_events renames a column, this silently passes
--- the new name downstream. Gold breaks. Nobody knows why.
-</code></pre>
-
-          <h2 id="the-fix">What to do about it</h2>
-
-          <p>
-            The fix isn't to abandon the medallion pattern — it's to introduce explicit contracts at layer boundaries.
-          </p>
-
-          <h3>1. Be explicit about what you consume</h3>
-          <p>
-            Never use <code>SELECT *</code> across layer boundaries. Explicitly name every column you depend on. This documents the interface and makes breakage loud and immediate rather than silent and delayed.
-          </p>
-
-          <pre><code class="language-sql">-- Better: explicit column selection creates a visible contract
-SELECT
-    event_id,
-    user_id,
-    event_type,
-    created_at,
-    session_id
-FROM bronze.raw_events
-WHERE event_type IS NOT NULL
-</code></pre>
-
-          <h3>2. Use schema tests as contract enforcement</h3>
-          <p>
-            In dbt, <code>not_null</code> and <code>accepted_values</code> tests are useful, but what you really want are <strong>schema tests that assert column presence</strong>. If Bronze renames <code>user_id</code> to <code>customer_id</code>, your Silver model should fail immediately in CI — not at runtime in production.
-          </p>
-
-          <h3>3. Version your interfaces, not your tables</h3>
-          <p>
-            When a Silver table is consumed by many Gold models, treat it like an API. Define what's stable. When you need to change something, deprecate the old column before removing it. This is boring discipline, but it's the difference between a system teams trust and one they fear.
+            I think the biggest difference between the clean theortical narrative and real-world implementation comes from changing requirements.
           </p>
 
           <div class="callout">
-            <p>The best data architectures I've worked in had one thing in common: engineers knew exactly what they could rely on and what was internal. That clarity comes from explicit contracts, not from hoping nobody touches the Bronze layer.</p>
+            <p>In practice, regular business processes don't stand still in the midst of data migrations.</p>
           </div>
 
-          <h2 id="conclusion">Conclusion</h2>
+          <p>
+            This necessarily means that while data is being migrated, the pipelines will likely also be changing. With evolving data transformations and even schema, validating migrated data becomes complicated. While some discrepancies are expected, determining the extent to which they are acceptable and not indicative of actual issues can be a time consuming process. Beyond validation, all downstream impacts of such changes need to be accounted for, adding further challenges.
+          </p>  
+
+          <h2 id="interconnection">Interconnected Data</h2>
 
           <p>
-            The medallion architecture is a good pattern. But like most good patterns, it requires discipline to preserve the properties that make it good. The moment layer boundaries become implicit — the moment you're relying on schema stability as a substitute for actual contracts — you've built a monolith.
+            This leads me to the second source of complexity, which comes from the interconnected nature of analytical databases. Tables rarely function independently; downstream models often rely on many upstream transformations and dependencies. Even a small schema change in one table can cascade across dashboards, derived tables, and reporting pipelines.
           </p>
 
           <p>
-            The fix is unglamorous: explicit column selection, schema tests, and treating your layer interfaces like the APIs they actually are. None of this is revolutionary. But it's the difference between a data platform that scales and one that becomes a legacy system before it's two years old.
+            Without detailed communication and coordination between teams, debugging missing or discrepant data becomes incredibly complicated.
+          </p>
+
+          <p>
+            From finding the discrepancy to exmaining the migrated transformation script, to comparing data across all upstream tables, the time to debug errors in a single table can grow dramatically.
+          </p>
+
+          <h2 id="validation">Data Validation</h2>
+
+          <p>
+            Data validation is a blog post in and of itself, but I would be remiss not to mention its impact on data migrations here. Between maintaining a source of truth and employing different validation processes on changing data, validation often ends up becoming a case-by-case process.
+          </p>
+
+          <p>
+            Simple row count checks are not sufficient - a migrated table may match its legacy counterpart's row count exactly while still containing missing values, duplicate records, incorrect joins, or subtly different transformation logic.
+          </p>
+
+          <p>
+            As a beginner, I would often find errors in my "validated" tables only after the data was visualized further downstream. This experience taught me that manual validation by itself was not a failsafe method of robust data validation. 
+          </p>
+
+          <h2 id="backfill">Historical Backfills</h2>
+
+          <p>
+            Lastly, backfilling historical data has proven to be a point of complexity in my data migration experience. It is a time consuming and expensive process, particularly when data is being regenerated using updated transformations instead of copied directly from legacy tables.
+          </p>
+
+          <p>
+            One lesson I learned the hard was was regarding scheduling. When backfilling a table day by day to limit compute usage, I wrote a shell script to repeatedly execte a dbt model across a historical date range. I let the process run overnight, only to discover the next morning that one failed run had halted the entire backfill shortly after I stopped monitoring it. After this surprise, I started building Airflow DAGs even for one-time backfills to ensure that retries, logging, and monitoring could be handled automatically.
+          </p>
+
+          <p>
+            Of course, data migrations involve many other nitty-gritty details such as SQL syntax differences between platforms and parsing nested JSON columns. However, those problems are generally more deterministic than the high-level operational challenges discussed in this article.
+          </p>
+
+          <p>
+            What other factors have added complexity to your data migration projects?
           </p>
 
           <div class="post-nav">
@@ -503,11 +468,10 @@ WHERE event_type IS NOT NULL
       <img src="../assets/images/footer.png" alt="">
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 Ayushi Banerjee</span>
+      <span class="footer-copy">© 2026 Ayushi Banerjee</span>
       <div class="footer-links">
-        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
-        <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
-        <a href="../feed.xml">RSS</a>
+        <a href="https://github.com/aybanerj" target="_blank">GitHub</a>
+        <a href="https://linkedin.com/in/ayushibanerjee" target="_blank">LinkedIn</a>
       </div>
     </div>
   </footer>

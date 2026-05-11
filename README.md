@@ -20,7 +20,7 @@ site/
 │       ├── chrome-fluid.png    ← (available for use)
 │       └── cybersigilism.png   ← Hero & sidebar sigil
 └── posts/
-    └── medallion-architecture.html   ← Sample post
+    └── data-migration.html   ← Sample post
 ```
 
 ---
@@ -73,7 +73,7 @@ If you have a domain (e.g. `ayushibanerjee.com`):
 
 ## Writing a New Post
 
-1. **Duplicate** `posts/medallion-architecture.html`
+1. **Duplicate** `posts/data-migration.html`
 2. **Rename** it (e.g. `posts/dbt-at-scale.html`)
 3. **Update** these fields at the top:
    - `<title>` tag
