@@ -35,7 +35,7 @@ body {
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
@@ -84,7 +84,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 10px;
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.12em;
   color: var(--text-primary);
@@ -106,7 +106,7 @@ img { display: block; max-width: 100%; }
 }
 
 .nav-links a {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.10em;
   text-transform: uppercase;
@@ -172,7 +172,7 @@ footer {
 }
 
 .footer-copy {
-  font-size: 12px;
+  font-size: 18px;
   letter-spacing: 0.10em;
   color: var(--text-faint);
   text-transform: uppercase;
@@ -184,7 +184,7 @@ footer {
 }
 
 .footer-links a {
-  font-size: 12px;
+  font-size: 18px;
   letter-spacing: 0.08em;
   color: var(--text-faint);
   text-transform: uppercase;
@@ -196,7 +196,7 @@ footer {
 /* --- Tag Pill --- */
 .tag {
   display: inline-block;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -213,7 +213,7 @@ footer {
 
 /* --- Section Label --- */
 .section-label {
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
