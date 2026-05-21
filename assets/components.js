@@ -20,6 +20,7 @@
     email:    'mailto:ayushib2019@gmail.com',
     images: {
       logo:   'assets/images/star.png',
+      header: 'assets/images/header.png',
       footer: 'assets/images/footer.png',
     }
   };
@@ -51,7 +52,7 @@
     <nav class="nav">
       <a href="${prefix}index.html" class="nav-logo">
         <img class="nav-logo-icon" src="${img('logo')}" alt="">
-        ${CONFIG.name}
+        <img src="${img('header')}" alt="">
       </a>
       <div class="nav-links">
         ${navLink('index.html', 'Home')}
@@ -70,7 +71,7 @@
       <div class="footer-chrome">
         <div class="footer-iri-bar"></div>
         <div class="footer-inner">
-          <span class="footer-copy">© 2025 ${CONFIG.name}</span>
+          <span class="footer-copy">© 2026 ${CONFIG.name}</span>
           <img class="footer-img" src="${img('footer')}" alt="">
           <div class="footer-links">
             <a href="${CONFIG.github}"  target="_blank" rel="noopener">GitHub</a>
