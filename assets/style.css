@@ -102,6 +102,11 @@ img { display: block; max-width: 100%; }
   border-radius: 2px;
 }
 
+.nav-header {
+  height: 50px;
+  width: auto;
+}
+
 .nav-links {
   display: flex;
   align-items: center;

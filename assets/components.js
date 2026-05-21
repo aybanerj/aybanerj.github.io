@@ -52,7 +52,7 @@
     <nav class="nav">
       <a href="${prefix}index.html" class="nav-logo">
         <img class="nav-logo-icon" src="${img('logo')}" alt="">
-        <img src="${img('header')}" alt="">
+        <img class="nav-header" src="${img('header')}" alt="">
       </a>
       <div class="nav-links">
         ${navLink('index.html', 'Home')}
