@@ -56,7 +56,6 @@
       </a>
       <div class="nav-links">
         ${navLink('index.html', 'Home')}
-        ${navLink('about.html', 'About')}
         ${navLink('blog.html',  'Blog')}
       </div>
     </nav>
