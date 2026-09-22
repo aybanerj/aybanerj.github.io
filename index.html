@@ -51,12 +51,14 @@
       font-family: var(--font-display);
       font-size: 20px;
       color: var(--text-primary);
+      padding: 10px 20px;
       line-height: 1.2;
     }
 
     .sidebar-role {
       font-size: 18px;
       color: var(--text-muted);
+      padding: 10px 20px;
       margin-top: 4px;
       letter-spacing: 0.04em;
     }
@@ -235,13 +237,10 @@
           <div class="about-bio">
             <h1><em class="iri">Hello World ;)</em></h1>
             <p>
-              I'm a <strong>data engineer</strong> with a BS in Computer Science from the beautiful UC San Diego. I write about the hands-on lessons I learn from working as a Data Engineer on large-scale transportation networks.
+              I'm a <strong>data engineer</strong> at Viasat working on global flight data analytics with a BS in Computer Science from UC San Diego.
             </p>
             <p>
-              I grew up living in Germany, India, and South Africa, and currently live in the bay area - I've seen a lot of <em class="iri">stuff</em>.
-            </p>  
-            <p>
-              I believe that AI is the tool that enables us to solve problems ar larger scale, and our responsibility is to prioritize the problems that will improve life for the most people. One such problem I'm interested in is improving reliability of global transportation networks through AI-driven delay prediction/prevention.
+              With AI empowering us to solve problems at larger scales, I believe our responsibility is to prioritize the problems that will improve life for the most people. One such problem I'm interested in is improving reliability of global transportation networks through AI-driven delay prediction and prevention.
             </p>
             <p>
               When I'm not thinking about tech or transportation, I'm probably playing Minecraft, practicing cooking different cuisines, or running 5Ks.
@@ -285,6 +284,560 @@
 
       </div>
     </div>
+    <!--
+  ============================================================
+  TIMELINE SECTION
+  ============================================================
+  Drop this entire block into whichever page you want it on.
+  It is self-contained — styles are scoped with .tl- prefixes
+  so they won't bleed into the rest of your site.
+
+  ADDING A NEW STATION:
+  Copy one .tl-row block, set the correct side class
+  (.tl-left or .tl-right), update year / title / sub,
+  and set the colour class on the row:
+    .tl-personal  — lavender
+    .tl-edu       — ice blue
+    .tl-work      — mint green
+  ============================================================
+-->
+
+<section class="tl-section">
+
+  <style>
+    /* ── wrapper ── */
+    .tl-section {
+      padding: 64px 40px 72px;
+      position: relative;
+    }
+
+    .tl-header {
+      font-family: var(--font-mono, monospace);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: var(--text-muted, rgba(180,176,215,0.4));
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .tl-section-title {
+      font-family: var(--font-display, Georgia, serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400;
+      color: var(--text-primary, #e2def8);
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 40px;
+    }
+
+    .tl-section-title em {
+      font-style: italic;
+      background: linear-gradient(90deg,#a8a4e0,#c4b8f0,#9dd8e8,#a8d8d0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── legend ── */
+    .tl-legend {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .tl-leg {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono, monospace);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(180,176,215,0.45);
+    }
+
+    .tl-leg-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── track container ── */
+    .tl-track {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* ── rails (two vertical lines) ── */
+    .tl-rails {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tl-rail {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: rgba(180,176,215,0.60);
+      border-radius: 1px;
+    }
+
+    .tl-rail:first-child { left: 0; }
+    .tl-rail:last-child  { right: 0; }
+
+    /* ── crossties (SVG pattern overlay) ── */
+    .tl-ties {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+
+    /* ── end caps ── */
+    .tl-cap {
+      width: 20px;
+      height: 5px;
+      background: rgba(180,176,215,0.55);
+      border-radius: 3px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tl-ellipsis {
+      font-size: 14px;
+      color: rgba(180,176,215,0.28);
+      letter-spacing: 4px;
+      padding: 6px 0 0;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── rows ── */
+    .tl-row {
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr;
+      width: 100%;
+      min-height: 88px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tl-left-cell  { text-align: right; padding-right: 28px; }
+    .tl-right-cell { text-align: left;  padding-left: 28px; }
+
+    .tl-center-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* ── station dot ── */
+    .tl-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #080809;
+      border: 2.5px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.2s;
+    }
+
+    .tl-row:hover .tl-dot { transform: scale(1.25); }
+
+    .tl-dot-inner {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    /* ── horizontal connector from dot to card ── */
+    .tl-conn {
+      position: absolute;
+      top: 50%;
+      height: 1px;
+      width: 26px;
+      transform: translateY(-50%);
+      opacity: 0.35;
+    }
+
+    .tl-conn-left  { right: 100%; }
+    .tl-conn-right { left: 100%; }
+
+    /* ── card text ── */
+    .tl-year {
+      font-family: var(--font-mono, monospace);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+
+    .tl-title {
+      font-family: var(--font-display, Georgia, serif);
+      font-size: 15px;
+      font-weight: 400;
+      color: rgba(228,226,248,0.94);
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+
+    .tl-sub {
+      font-size: 11px;
+      color: rgba(190,186,220,0.52);
+      line-height: 1.45;
+    }
+
+    /* ── colour themes ── */
+    .tl-personal .tl-dot        { border-color: rgba(196,184,240,0.9); }
+    .tl-personal .tl-dot-inner  { background:   rgba(196,184,240,0.9); }
+    .tl-personal .tl-year       { color:        rgba(196,184,240,0.8); }
+    .tl-personal .tl-conn       { background:   rgba(196,184,240,1);   }
+
+    .tl-edu .tl-dot        { border-color: rgba(157,216,232,0.9); }
+    .tl-edu .tl-dot-inner  { background:   rgba(157,216,232,0.9); }
+    .tl-edu .tl-year       { color:        rgba(157,216,232,0.8); }
+    .tl-edu .tl-conn       { background:   rgba(157,216,232,1);   }
+
+    .tl-work .tl-dot        { border-color: rgba(168,216,208,0.9); }
+    .tl-work .tl-dot-inner  { background:   rgba(168,216,208,0.9); }
+    .tl-work .tl-year       { color:        rgba(168,216,208,0.8); }
+    .tl-work .tl-conn       { background:   rgba(168,216,208,1);   }
+
+    /* ── responsive: collapse to single column on small screens ── */
+    @media (max-width: 600px) {
+      .tl-row {
+        grid-template-columns: 40px 1fr;
+        min-height: 72px;
+      }
+
+      .tl-left-cell  { display: none; }
+      .tl-right-cell { grid-column: 2; padding-left: 20px; text-align: left; }
+
+      /* always show content on right when collapsed */
+      .tl-row .tl-center-cell { grid-column: 1; }
+
+      /* move left-side cards to right column */
+      .tl-row .tl-left-cell-content {
+        display: block;
+        grid-column: 2;
+        padding-left: 20px;
+        text-align: left;
+      }
+
+      .tl-rails { left: 20px; transform: none; }
+      .tl-ties  { left: 20px; transform: none; }
+      .tl-cap   { margin-left: 10px; }
+    }
+  </style>
+
+  <div class="tl-header">The journey</div>
+  <h2 class="tl-section-title">Milestones &amp; <em>moments.</em></h2>
+
+  <div class="tl-legend">
+    <div class="tl-leg">
+      <div class="tl-leg-dot" style="background:rgba(196,184,240,0.85)"></div>
+      Personal
+    </div>
+    <div class="tl-leg">
+      <div class="tl-leg-dot" style="background:rgba(157,216,232,0.85)"></div>
+      Education
+    </div>
+    <div class="tl-leg">
+      <div class="tl-leg-dot" style="background:rgba(168,216,208,0.85)"></div>
+      Work
+    </div>
+  </div>
+
+  <div class="tl-track">
+
+    <!-- SVG crossties -->
+    <svg class="tl-ties" height="100%" width="32" style="position:absolute;top:0;left:50%;transform:translateX(-50%);overflow:visible;pointer-events:none;z-index:0;">
+      <defs>
+        <pattern id="tl-tie-pattern" x="0" y="0" width="32" height="22" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="11" x2="32" y2="11"
+                stroke="rgba(180,176,215,0.42)"
+                stroke-width="4.5"
+                stroke-linecap="round"/>
+        </pattern>
+      </defs>
+      <rect width="32" height="100%" fill="url(#tl-tie-pattern)"/>
+    </svg>
+
+    <!-- rails -->
+    <div class="tl-rails">
+      <div class="tl-rail"></div>
+      <div class="tl-rail"></div>
+    </div>
+
+    <!-- top cap -->
+    <div style="position:relative;z-index:1;margin-bottom:0;">
+      <div class="tl-cap"></div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STATIONS — most recent at top
+         To add: copy a row, update class,
+         year, title, sub.
+    ══════════════════════════════════ -->
+
+    <!-- 2025 · Viasat · RIGHT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2025</div>
+        <div class="tl-title">Data Engineer, Viasat</div>
+        <div class="tl-sub">Moved to California</div>
+      </div>
+    </div>
+
+    <!-- 2024 · Ohio + cats · LEFT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell">
+        <div class="tl-year">2024</div>
+        <div class="tl-title">Ohio tax portal project</div>
+        <div class="tl-sub">Adopted 2 street cats</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2023 · Fast Enterprises · RIGHT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Software Engineer, Fast Enterprises</div>
+        <div class="tl-sub">Moved to Colorado</div>
+      </div>
+    </div>
+
+    <!-- 2023 · Graduated UCSD · LEFT · edu -->
+    <div class="tl-row tl-edu">
+      <div class="tl-left-cell">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Graduated B.S. Computer Science</div>
+        <div class="tl-sub">UC San Diego</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2022 · WCSNG · RIGHT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Research Assistant</div>
+        <div class="tl-sub">WCSNG Lab, UC San Diego</div>
+      </div>
+    </div>
+
+    <!-- 2022 · Applied Materials · LEFT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Software Engineer Intern</div>
+        <div class="tl-sub">Applied Materials</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2021 · Amplus Solar · RIGHT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2021</div>
+        <div class="tl-title">Software Engineer Intern</div>
+        <div class="tl-sub">Amplus Solar</div>
+      </div>
+    </div>
+
+    <!-- 2020 · Writing Tutor · LEFT · work -->
+    <div class="tl-row tl-work">
+      <div class="tl-left-cell">
+        <div class="tl-year">2020</div>
+        <div class="tl-title">Writing Tutor</div>
+        <div class="tl-sub">UC San Diego</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2020 · Changed major · RIGHT · edu -->
+    <div class="tl-row tl-edu">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2020</div>
+        <div class="tl-title">Changed major to Computer Science</div>
+        <div class="tl-sub">UC San Diego</div>
+      </div>
+    </div>
+
+    <!-- 2019 · Started UCSD · LEFT · edu -->
+    <div class="tl-row tl-edu">
+      <div class="tl-left-cell">
+        <div class="tl-year">2019</div>
+        <div class="tl-title">B.S. Cognitive Science</div>
+        <div class="tl-sub">UC San Diego · Moved to San Diego</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2019 · Graduated HS · RIGHT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2019</div>
+        <div class="tl-title">Graduated high school</div>
+        <div class="tl-sub">AISJ, Johannesburg</div>
+      </div>
+    </div>
+
+    <!-- 2018 · Rugby Uganda · LEFT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell">
+        <div class="tl-year">2018</div>
+        <div class="tl-title">AISJ Rugby team</div>
+        <div class="tl-sub">Played tournament in Uganda</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2017 · Piano Grade 8 · RIGHT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2017</div>
+        <div class="tl-title">Trinity Piano Grade 8</div>
+        <div class="tl-sub">Passed with distinction</div>
+      </div>
+    </div>
+
+    <!-- 2013 · South Africa · LEFT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell">
+        <div class="tl-year">2013</div>
+        <div class="tl-title">Moved to South Africa</div>
+        <div class="tl-sub">American International School of Johannesburg</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- 2007 · India · RIGHT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell"></div>
+      <div class="tl-center-cell">
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+        <div class="tl-conn tl-conn-right"></div>
+      </div>
+      <div class="tl-right-cell">
+        <div class="tl-year">2007</div>
+        <div class="tl-title">Moved to India</div>
+        <div class="tl-sub">Age 6</div>
+      </div>
+    </div>
+
+    <!-- 2001 · Germany · LEFT · personal -->
+    <div class="tl-row tl-personal">
+      <div class="tl-left-cell">
+        <div class="tl-year">2001</div>
+        <div class="tl-title">Moved to Germany</div>
+        <div class="tl-sub">6 months old</div>
+      </div>
+      <div class="tl-center-cell">
+        <div class="tl-conn tl-conn-left"></div>
+        <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+      </div>
+      <div class="tl-right-cell"></div>
+    </div>
+
+    <!-- bottom cap -->
+    <div style="position:relative;z-index:1;margin-top:0;">
+      <div class="tl-cap"></div>
+    </div>
+    <div class="tl-ellipsis">· · ·</div>
+
+  </div><!-- .tl-track -->
+</section>
   </main>
 <script src="assets/components.js"></script>
 </body>
