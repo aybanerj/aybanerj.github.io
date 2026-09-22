@@ -104,4 +104,8 @@
     document.body.insertAdjacentHTML('beforeend', FOOTER_HTML);
   }
 
+  const s = document.createElement('script');
+  s.src = prefix + 'assets/cursor-trail.js';
+  document.body.appendChild(s);
+
 })();
