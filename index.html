@@ -198,6 +198,150 @@
     }
 
     .now-text strong { color: var(--text-primary); font-weight: 600; }
+
+    .id-card-wrap {
+    position: sticky;
+    top: 80px;
+    padding-right: 48px;
+  }
+
+  .id-card {
+    background: #06060a;
+    position: relative;
+    border: 1.5px solid transparent;
+    background-clip: padding-box;
+    max-width: 280px;
+  }
+
+  .id-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      135deg,
+      rgba(168,164,224,0.85),
+      rgba(196,184,240,0.6),
+      rgba(157,216,232,0.85),
+      rgba(168,216,208,0.6),
+      rgba(168,164,224,0.85)
+    );
+    z-index: -1;
+  }
+
+  .id-card::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 0.5px solid rgba(180,176,215,0.20);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .id-card-top {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    border-bottom: 1px solid rgba(180,176,215,0.45);
+  }
+
+  .id-photo {
+    border-right: 1px solid rgba(180,176,215,0.45);
+    height: 120px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .id-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(180,176,215,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180,176,215,0.04) 1px, transparent 1px);
+    background-size: 10px 10px;
+    pointer-events: none;
+  }
+
+  .id-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    filter: grayscale(15%) contrast(1.05);
+  }
+
+  .id-name-block {
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .id-name {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: rgba(228,226,248,0.97);
+    line-height: 1.15;
+    letter-spacing: 0.03em;
+  }
+
+  .id-name-romanised {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-style: italic;
+    color: rgba(180,176,215,0.55);
+    letter-spacing: 0.06em;
+  }
+
+  .id-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(168,164,224,0.45);
+    letter-spacing: 0.14em;
+    margin-top: 2px;
+  }
+
+  .id-fields {
+    padding: 6px 0;
+  }
+
+  .id-field {
+    display: grid;
+    grid-template-columns: 86px 1fr;
+    border-bottom: 0.5px solid rgba(180,176,215,0.10);
+    padding: 7px 12px;
+  }
+
+  .id-field:last-child { border-bottom: none; }
+
+  .id-field-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: rgba(180,176,215,0.40);
+    padding-top: 1px;
+    line-height: 1.45;
+  }
+
+  .id-field-val {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: rgba(220,218,245,0.90);
+    letter-spacing: 0.03em;
+    line-height: 1.45;
+  }
+
+  .id-field-val.active {
+    background: linear-gradient(90deg, #a8a4e0, #9dd8e8, #c4b8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 600;
+  }
   </style>
 </head>
 <body>
@@ -207,27 +351,36 @@
 
       <!-- SIDEBAR -->
       <aside class="about-sidebar">
-        <div class="avatar-ring">
-          <img src="assets/images/avatar.png" style="width:100%;height:100%;object-fit:cover;">
-        </div>
+        <div class="id-card-wrap">
+          <div class="id-card">
 
-        <div>
-          <div class="sidebar-name">Ayushi<br>Banerjee</div>
-          <div class="sidebar-role">Data Engineer</div>
-        </div>
+            <div class="id-card-top">
+              <div class="id-photo">
+                <img src="assets/images/avatar.png" alt="Ayushi Banerjee">
+              </div>
+              <div class="id-name-block">
+                <div class="id-name">AYUSHI<br>BANERJEE</div>
+                <div class="id-name-romanised">Data Engineer, Viasat</div>
+              </div>
+            </div>
 
-        <div class="sidebar-links">
-          <a href="https://github.com/aybanerj" target="_blank" class="sidebar-link">
-            GitHub <span class="arr">↗</span>
-          </a>
-          <a href="https://linkedin.com/in/ayushibanerjee" target="_blank" class="sidebar-link">
-            LinkedIn <span class="arr">↗</span>
-          </a>
-          <a href="mailto:ayushib2019@gmail.com" class="sidebar-link">
-            Email <span class="arr">↗</span>
-          </a>
+            <div class="id-fields">
+              <div class="id-field">
+                <div class="id-field-label">Education</div>
+                <div class="id-field-val">B.S. Comp. Sci.<br>UCSD, 2023</div>
+              </div>
+              <div class="id-field">
+                <div class="id-field-label">Location</div>
+                <div class="id-field-val">California, USA</div>
+              </div>
+              <div class="id-field">
+                <div class="id-field-label">Fun Fact</div>
+                <div class="id-field-val">Can name every country in the world</div>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <img class="sb-sigil" src="assets/images/sidebar.png" alt="">
       </aside>
 
       <!-- CONTENT -->
